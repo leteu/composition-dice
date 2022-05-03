@@ -1,30 +1,55 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div class="dice-box">
+    <Dice :value="diceValue" :roll="diceRoll" />
+    <!-- v-touch-swipe="test" -->
+    <button @click="rollDiceRandom">굴리기</button>
   </div>
-  <router-view/>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import Dice from '/src/components/Dice';
 
-#nav {
-  padding: 30px;
+export default {
+  name: "App",
+  components: {
+    Dice
+  },
+  data() {
+    return {
+      diceRoll: false,
+      diceValue: 1,
+    };
+  },
+  methods: {
+    async rollDiceRandom() {
+      this.diceValue = Math.floor(Math.random() * (6 - 1) + 1);
+      this.diceRoll = true;
+      await this.delay(1);
+      this.diceRoll = false;
+    },
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+    test(agr, agr2, agr3, agr4) {
+      console.log(agr, agr2, agr3, agr4)
+    },
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
+    delay(time) {
+      return new Promise((resolve) =>
+        setTimeout(() => {
+          resolve();
+        }, time * 1000)
+      );
+    },
+  },
+};
+</script>
+
+<style lang="sass">
+@import ./components/Dice/dice
+
+.dice-box
+  width: 100%
+  height: 400px
+  display: flex
+  justify-content: space-around
+  align-items: center
 </style>
